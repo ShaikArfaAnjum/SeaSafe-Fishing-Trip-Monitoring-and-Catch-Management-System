@@ -1,0 +1,401 @@
+/* ============================================================
+   src/styles/pages.css
+   Page-specific styles matching the SeaSafe reference UI:
+   - Login & Register split view with boat-sea.jpg
+   - Welcome Hero banner with boats-harbor.jpg
+   - StatCards grid & WeatherCard
+   - Overdue Alert banner in Officer dashboard
+   ============================================================ */
+
+/* ---- Auth Pages (Login & Register) Fullscreen Template ---- */
+.auth-page-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  background: #ffffff url('/images/auth-bg.jpg') center center / cover no-repeat;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.auth-card-frame {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  position: relative;
+}
+
+.auth-card-left {
+  flex: 0.85;
+  /* Transparent area: reveals SeaSafe logo and fishing boat graphic */
+}
+
+.auth-card-right {
+  flex: 1.15;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 4rem;
+  position: relative;
+}
+
+.auth-form-box {
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-heading {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 0.35rem;
+  letter-spacing: -0.5px;
+}
+
+.auth-subheading {
+  font-size: 1.1rem;
+  color: #475569;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.auth-accent-bar {
+  width: 48px;
+  height: 4px;
+  background: #0284c7;
+  border-radius: 2px;
+  margin-bottom: 2.25rem;
+}
+
+/* Custom styled inputs with left icons matching Image 1 */
+.input-with-icon {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 0.25rem 1rem;
+  margin-bottom: 1.35rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.input-with-icon:focus-within {
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+.input-icon-left {
+  color: #0284c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.85rem;
+}
+
+.input-field-custom {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0.85rem 0;
+  font-size: 1rem;
+  color: #0f172a;
+  background: transparent;
+}
+
+.input-icon-toggle {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+}
+
+.input-icon-toggle:hover {
+  color: #0284c7;
+}
+
+/* Vibrant Blue Gradient Login Button matching Image 1 */
+.btn-login-gradient {
+  width: 100%;
+  padding: 0.95rem;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #0284c7 0%, #0066cc 100%);
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  margin-top: 0.5rem;
+}
+
+.btn-login-gradient:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.45);
+}
+
+/* Divider with 'or' in center */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.75rem 0;
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.auth-divider span {
+  padding: 0 1rem;
+}
+
+@media (max-width: 900px) {
+  .auth-card-frame {
+    flex-direction: column;
+  }
+  .auth-card-left {
+    min-height: 280px;
+    background: url('/images/auth-bg.jpg') top left / cover no-repeat;
+  }
+  .auth-card-right {
+    padding: 2.5rem 1.5rem;
+  }
+}
+
+/* ---- Welcome Hero Banner (Fisherman Home) ---- */
+.welcome-hero {
+  background: linear-gradient(135deg, rgba(19, 164, 217, 0.85) 0%, rgba(21, 101, 192, 0.9) 100%),
+              url('/images/boats-harbor.jpg') center/cover no-repeat;
+  color: #fff;
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.welcome-hero-text h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-hero-text p {
+  font-size: 1.05rem;
+  color: #e0f2fe;
+  max-width: 500px;
+  margin-bottom: 1.5rem;
+}
+
+/* ---- Stat Cards Grid ---- */
+.stat-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-card-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+}
+
+.stat-card-info h3 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.stat-card-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1;
+}
+
+/* ---- Officer Overdue Alert Banner ---- */
+.overdue-alert-banner {
+  background-color: #fee2e2;
+  border: 1px solid #fca5a5;
+  border-radius: var(--radius-md);
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  color: #991b1b;
+}
+
+.overdue-alert-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+/* ---- Weather Card ---- */
+.weather-card {
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.weather-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.weather-header h3 {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.weather-disclaimer {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.weather-body {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.weather-icon {
+  font-size: 2.75rem;
+}
+
+.weather-temp {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.weather-condition {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* ---- Status Badge ---- */
+.status-badge {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-badge.at-sea {
+  background-color: var(--ocean-light);
+  color: #0284c7;
+}
+
+.status-badge.returned {
+  background-color: var(--success-light);
+  color: var(--success);
+}
+
+.status-badge.overdue {
+  background-color: var(--danger-light);
+  color: var(--danger);
+}
+
+.status-badge.verified {
+  background-color: var(--warning-light);
+  color: #b45309;
+}
+
+.status-badge.resolved {
+  background-color: var(--success-light);
+  color: var(--success);
+}
+
+.status-badge.open {
+  background-color: var(--danger-light);
+  color: var(--danger);
+}
+
+/* ---- Progress Bars (Reports Summary) ---- */
+.progress-bar-wrapper {
+  margin-bottom: 0.85rem;
+}
+
+.progress-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.progress-track {
+  width: 100%;
+  height: 8px;
+  background-color: #f1f5f9;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ocean-sky), var(--ocean-blue));
+  border-radius: 9999px;
+}
+
+/* Responsiveness */
+@media (max-width: 900px) {
+  .auth-panel-visual {
+    display: none;
+  }
+  .welcome-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
