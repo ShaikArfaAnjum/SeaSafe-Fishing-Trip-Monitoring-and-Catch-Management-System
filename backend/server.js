@@ -51,16 +51,31 @@ app.use(express.json());
 
 // ---- Routes ----
 
-// Health check – confirm the API is running
-app.get('/', function (req, res) {
-  res.json({ message: 'SeaSafe API is running' });
-});
-
 app.use('/api/auth',   authRoutes);
 app.use('/api/boats',  boatRoutes);
 app.use('/api/trips',  tripRoutes);
 app.use('/api/prices', priceRoutes);
 app.use('/api/admin',  adminRoutes);
+
+// Serve frontend static assets in production or when dist exists
+const fs = require('fs');
+const frontendDistPath = path.resolve(__dirname, '../frontend/dist');
+
+if (fs.existsSync(frontendDistPath)) {
+  app.use(express.static(frontendDistPath));
+  // Any non-API route returns index.html for React Router SPA
+  app.get('*', function (req, res, next) {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    res.sendFile(path.join(frontendDistPath, 'index.html'));
+  });
+} else {
+  // Health check fallback when running backend standalone
+  app.get('/', function (req, res) {
+    res.json({ message: 'SeaSafe API is running' });
+  });
+}
 
 const PORT = process.env.PORT || 5000;
 

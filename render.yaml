@@ -1,0 +1,21 @@
+services:
+  # ============================================================
+  # SeaSafe Full-Stack Unified Web Service on Render
+  # Runs both Backend API and serves Frontend React SPA
+  # ============================================================
+  - type: web
+    name: seasafe
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
