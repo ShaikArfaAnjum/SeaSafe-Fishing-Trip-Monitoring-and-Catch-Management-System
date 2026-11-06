@@ -2,6 +2,8 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+const JWT_SECRET = process.env.JWT_SECRET || 'seasafe_jwt_secret_change_me_2026';
+
 // Verify Bearer JWT token and attach user to req.user
 async function protect(req, res, next) {
   try {
@@ -12,7 +14,7 @@ async function protect(req, res, next) {
     }
 
     const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
 
     const user = await User.findById(decoded.id).select('-password');
     if (!user) {

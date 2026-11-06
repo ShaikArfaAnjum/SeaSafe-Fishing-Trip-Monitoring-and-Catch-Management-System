@@ -4,13 +4,8 @@
   "description": "SeaSafe - Fishing Trip Monitoring and Catch Management System (Team AlphaCore)",
   "main": "backend/server.js",
   "scripts": {
-    "build": "npm --prefix backend install && npm --prefix frontend install && npm --prefix frontend run build",
+    "build": "npm --prefix backend install && npm --prefix frontend install --include=dev && npm --prefix frontend run build",
     "start": "node backend/server.js",
-    "seed": "npm --prefix backend run seed",
-    "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\""
-  },
-  "devDependencies": {
-    "concurrently": "^8.2.2"
+    "seed": "node backend/seed.js"
   }
 }
-
