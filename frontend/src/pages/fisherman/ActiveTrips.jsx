@@ -1,8 +1,6 @@
-// ============================================================
-// src/pages/fisherman/ActiveTrips.jsx
 // Displays active trips (At Sea or Overdue) for the logged-in fisherman.
 // Allows marking trips as returned and quick access to catch recording.
-// ============================================================
+
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';

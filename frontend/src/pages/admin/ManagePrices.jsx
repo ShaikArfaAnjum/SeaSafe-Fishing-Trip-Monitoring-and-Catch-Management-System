@@ -1,7 +1,4 @@
-// ============================================================
-// src/pages/admin/ManagePrices.jsx
 // Admin page to create, update, and delete fish prices on the official price board.
-// ============================================================
 
 import { useState, useEffect } from 'react';
 import api from '../../api';

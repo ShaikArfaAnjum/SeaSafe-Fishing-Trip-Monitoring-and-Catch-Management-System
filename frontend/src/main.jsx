@@ -1,9 +1,7 @@
-// ============================================================
-// src/main.jsx
+
 // React application entry point.
 // Wraps App inside BrowserRouter and AuthProvider.
 // Imports all CSS stylesheets.
-// ============================================================
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';

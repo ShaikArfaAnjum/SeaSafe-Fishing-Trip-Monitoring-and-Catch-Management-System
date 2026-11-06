@@ -1,21 +1,14 @@
-// ============================================================
-// controllers/authController.js
-// Handles user registration, login, and fetching the current user.
-// Passwords are hashed with bcryptjs before saving.
-// JWT tokens expire in 7 days.
-// ============================================================
-
+// Auth controller: handles registration, login, and user profile
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// Create a signed JWT token for the given user id
+// Generate 7-day signed JWT token
 function generateToken(userId) {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '7d' });
 }
 
-// Build the safe user object that is sent back in responses.
-// NEVER includes the password field.
+// Build safe user response without password
 function buildUserResponse(user) {
   return {
     _id:   user._id,
@@ -25,44 +18,36 @@ function buildUserResponse(user) {
   };
 }
 
-// POST /api/auth/register
-// Register a new user with role "fisherman" or "officer" only.
-// Rejects: "admin" role, duplicate email, password shorter than 6 chars.
+// POST /api/auth/register - register a fisherman or officer
 async function register(req, res) {
   try {
     const { name, email, password, role } = req.body;
 
-    // All fields are required
     if (!name || !email || !password || !role) {
       return res.status(400).json({ message: 'Please provide name, email, password and role.' });
     }
 
-    // Admin accounts cannot be created through the public register endpoint
     if (role === 'admin') {
       return res.status(400).json({ message: 'Admin accounts cannot be created through registration.' });
     }
 
-    // Only fisherman or officer are accepted at registration
     if (!['fisherman', 'officer'].includes(role)) {
       return res.status(400).json({ message: 'Role must be either "fisherman" or "officer".' });
     }
 
-    // Enforce minimum password length
     if (password.length < 6) {
       return res.status(400).json({ message: 'Password must be at least 6 characters long.' });
     }
 
-    // Reject duplicate emails
     const existingUser = await User.findOne({ email: email.toLowerCase() });
     if (existingUser) {
       return res.status(400).json({ message: 'A user with this email already exists.' });
     }
 
-    // Hash the password with a salt before saving to the database
+    // Hash password with salt before saving
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Save the new user to the database
     const newUser = await User.create({
       name,
       email,
@@ -70,7 +55,6 @@ async function register(req, res) {
       role
     });
 
-    // Return the token and safe user object
     const token = generateToken(newUser._id);
     res.status(201).json({ token, user: buildUserResponse(newUser) });
   } catch (error) {
@@ -78,30 +62,26 @@ async function register(req, res) {
   }
 }
 
-// POST /api/auth/login
-// Log in an existing user and return a JWT token.
+// POST /api/auth/login - authenticate user and return token
 async function login(req, res) {
   try {
     const { email, password } = req.body;
 
-    // Both fields are required
     if (!email || !password) {
       return res.status(400).json({ message: 'Please provide email and password.' });
     }
 
-    // Find the user by email (we need the password field for comparison)
     const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password.' });
     }
 
-    // Compare the provided plain-text password with the stored hashed password
+    // Compare plain-text password with stored hash
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
       return res.status(401).json({ message: 'Invalid email or password.' });
     }
 
-    // Return the token and safe user object
     const token = generateToken(user._id);
     res.json({ token, user: buildUserResponse(user) });
   } catch (error) {
@@ -109,8 +89,7 @@ async function login(req, res) {
   }
 }
 
-// GET /api/auth/me
-// Return the currently logged-in user's details (set by the protect middleware).
+// GET /api/auth/me - get current user profile
 async function getMe(req, res) {
   try {
     res.json(buildUserResponse(req.user));
@@ -120,4 +99,3 @@ async function getMe(req, res) {
 }
 
 module.exports = { register, login, getMe };
-

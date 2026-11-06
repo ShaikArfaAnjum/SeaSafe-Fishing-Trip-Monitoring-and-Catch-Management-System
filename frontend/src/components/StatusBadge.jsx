@@ -1,7 +1,5 @@
-// ============================================================
-// src/components/StatusBadge.jsx
+
 // Displays color-coded pills for trip and alert statuses.
-// ============================================================
 
 export default function StatusBadge({ status }) {
   const norm = (status || '').toLowerCase().replace(/\s+/g, '-');

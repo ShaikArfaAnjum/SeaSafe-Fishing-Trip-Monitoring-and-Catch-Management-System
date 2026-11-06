@@ -2,7 +2,7 @@
    src/styles/layout.css
    Layout styles for Dashboard, Sidebar, and Navbar.
    Matches the SeaSafe reference UI with left navy sidebar.
-   ============================================================ */
+   =========================================================== */
 
 .app-layout {
   display: flex;
@@ -225,4 +225,3 @@
     padding: 1.25rem 1rem;
   }
 }
-

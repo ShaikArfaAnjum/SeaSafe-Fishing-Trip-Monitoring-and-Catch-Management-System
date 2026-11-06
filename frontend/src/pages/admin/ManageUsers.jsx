@@ -1,8 +1,4 @@
-// ============================================================
-// src/pages/admin/ManageUsers.jsx
-// Admin page to manage system accounts and change user roles.
-// Prevents an admin from deleting their own account.
-// ============================================================
+// Admin page to manage system accounts and change user roles.Prevents an admin from deleting their own account.
 
 import { useState, useEffect, useContext } from 'react';
 import api from '../../api';

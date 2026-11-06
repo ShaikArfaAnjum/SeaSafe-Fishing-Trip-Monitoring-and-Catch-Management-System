@@ -1,8 +1,5 @@
-// ============================================================
-// src/pages/fisherman/StartTrip.jsx
 // Form for fishermen to start a new fishing trip with expected return time.
 // Includes harbour weather forecast for safe departure planning.
-// ============================================================
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';

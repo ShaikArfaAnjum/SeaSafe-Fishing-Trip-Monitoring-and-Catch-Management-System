@@ -1,15 +1,8 @@
-// ============================================================
-// controllers/boatController.js
-// Handles all boat-related operations.
-// Fishermen manage their own boats.
-// Officers and admins can view all boats.
-// ============================================================
-
+// Boat controller: handles boat registration, retrieval, updates, and deletion
 const Boat = require('../models/Boat');
 const Trip = require('../models/Trip');
 
-// GET /api/boats
-// Return all boats that belong to the logged-in fisherman, newest first.
+// GET /api/boats - get boats owned by logged-in fisherman
 async function getMyBoats(req, res) {
   try {
     const boats = await Boat.find({ owner: req.user._id }).sort({ createdAt: -1 });
@@ -19,9 +12,7 @@ async function getMyBoats(req, res) {
   }
 }
 
-// GET /api/boats/all
-// Return all boats in the system with owner name and email populated.
-// For officers and admins only.
+// GET /api/boats/all - get all boats across harbours (officer/admin)
 async function getAllBoats(req, res) {
   try {
     const boats = await Boat.find()
@@ -33,9 +24,7 @@ async function getAllBoats(req, res) {
   }
 }
 
-// POST /api/boats
-// Register a new boat under the logged-in fisherman.
-// Rejects duplicate registration numbers.
+// POST /api/boats - register a new boat
 async function createBoat(req, res) {
   try {
     const {
@@ -47,14 +36,12 @@ async function createBoat(req, res) {
       emergencyContactPhone
     } = req.body;
 
-    // Check that all required fields are present
     if (!boatName || !registrationNumber || !harbour || !emergencyContactName || !emergencyContactPhone) {
       return res.status(400).json({
         message: 'Please provide boatName, registrationNumber, harbour, emergencyContactName and emergencyContactPhone.'
       });
     }
 
-    // A registration number must be unique across all boats
     const existingBoat = await Boat.findOne({ registrationNumber });
     if (existingBoat) {
       return res.status(400).json({
@@ -62,7 +49,6 @@ async function createBoat(req, res) {
       });
     }
 
-    // Create the boat, setting the logged-in user as the owner
     const boat = await Boat.create({
       boatName,
       registrationNumber,
@@ -79,8 +65,7 @@ async function createBoat(req, res) {
   }
 }
 
-// PUT /api/boats/:id
-// Update a boat's details. Only the owner fisherman can do this.
+// PUT /api/boats/:id - update boat details (owner only)
 async function updateBoat(req, res) {
   try {
     const boat = await Boat.findById(req.params.id);
@@ -89,12 +74,10 @@ async function updateBoat(req, res) {
       return res.status(404).json({ message: 'Boat not found.' });
     }
 
-    // A fisherman can only update their own boat
     if (boat.owner.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: 'You are not authorised to update this boat.' });
     }
 
-    // Update only the fields that were sent in the request body
     const { boatName, registrationNumber, harbour, crew, emergencyContactName, emergencyContactPhone } = req.body;
 
     if (boatName !== undefined)              boat.boatName = boatName;
@@ -111,10 +94,7 @@ async function updateBoat(req, res) {
   }
 }
 
-// DELETE /api/boats/:id
-// Delete a boat. Only the owner can do this.
-// Refuses if the boat has an active trip (At Sea or Overdue).
-// Otherwise, also deletes all historical trip records for this boat.
+// DELETE /api/boats/:id - delete boat and its trips if no active voyage
 async function deleteBoat(req, res) {
   try {
     const boat = await Boat.findById(req.params.id);
@@ -123,12 +103,10 @@ async function deleteBoat(req, res) {
       return res.status(404).json({ message: 'Boat not found.' });
     }
 
-    // A fisherman can only delete their own boat
     if (boat.owner.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: 'You are not authorised to delete this boat.' });
     }
 
-    // Refuse to delete if the boat is currently at sea or overdue
     const activeTrip = await Trip.findOne({
       boat: boat._id,
       status: { $in: ['At Sea', 'Overdue'] }
@@ -140,10 +118,7 @@ async function deleteBoat(req, res) {
       });
     }
 
-    // Delete all trip records associated with this boat
     await Trip.deleteMany({ boat: boat._id });
-
-    // Delete the boat itself
     await boat.deleteOne();
 
     res.json({ message: 'Boat and all its trip records have been deleted successfully.' });
@@ -153,4 +128,3 @@ async function deleteBoat(req, res) {
 }
 
 module.exports = { getMyBoats, getAllBoats, createBoat, updateBoat, deleteBoat };
-

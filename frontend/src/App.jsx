@@ -1,8 +1,6 @@
-// ============================================================
-// src/App.jsx
 // Main application routing component using React Router v6.
 // Organizes public, protected, and role-based routes with DashboardLayout.
-// ============================================================
+
 
 import { useContext } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';

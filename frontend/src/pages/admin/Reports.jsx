@@ -1,8 +1,5 @@
-// ============================================================
-// src/pages/admin/Reports.jsx
 // Fishery analytics and harvest reporting page for administrators.
 // Uses clean CSS progress bars and tables (no bulky chart libraries).
-// ============================================================
 
 import { useState, useEffect } from 'react';
 import api from '../../api';

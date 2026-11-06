@@ -1,7 +1,5 @@
-// ============================================================
-// src/components/ProtectedRoute.jsx
 // Protects routes from unauthenticated access or unauthorized roles.
-// ============================================================
+
 
 import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';

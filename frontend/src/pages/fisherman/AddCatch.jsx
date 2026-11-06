@@ -1,8 +1,5 @@
-// ============================================================
-// src/pages/fisherman/AddCatch.jsx
 // Form to record fish caught during a fishing trip.
 // Displays the trip's recorded catches and allows deleting individual entries.
-// ============================================================
 
 import { useState, useEffect } from 'react';
 import api from '../../api';

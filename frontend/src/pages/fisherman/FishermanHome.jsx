@@ -1,16 +1,12 @@
-// ============================================================
-// src/pages/fisherman/FishermanHome.jsx
 // Fisherman dashboard home page matching the SeaSafe reference design.
-// Contains: Welcome hero banner with boat photo, StatCards,
-// Recent Trips table (last 5), and Fish Price Board preview.
-// ============================================================
-
+// Contains: Welcome hero banner with boat photo, StatCards,Recent Trips table (last 5), and Fish Price Board preview.
 import { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../api';
 import { AuthContext } from '../../context/AuthContext';
 import StatCard from '../../components/StatCard';
 import StatusBadge from '../../components/StatusBadge';
+import WeatherCard from '../../components/WeatherCard';
 import { formatTime } from '../../utils/formatDate';
 
 export default function FishermanHome() {
@@ -87,6 +83,11 @@ export default function FishermanHome() {
           iconBg={overdueTripsCount > 0 ? 'var(--danger-light)' : '#f1f5f9'}
         />
         <StatCard title="Total Catch" value={`${totalCatchKg} kg`} icon="🐟" iconBg="#e0f2fe" />
+      </div>
+
+      {/* Weather Forecast & Marine Conditions */}
+      <div style={{ marginBottom: '1.5rem' }}>
+        <WeatherCard />
       </div>
 
       {/* Two columns: Recent Trips & Fish Price Preview */}

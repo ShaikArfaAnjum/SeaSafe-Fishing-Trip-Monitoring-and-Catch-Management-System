@@ -1,10 +1,4 @@
-// ============================================================
-// routes/adminRoutes.js
-// All routes here are restricted to admin users only.
-// The router-level middleware applies protect + allowRoles('admin')
-// to every route in this file automatically.
-// ============================================================
-
+// Routes restricted to admin users only
 const express = require('express');
 const router = express.Router();
 const {
@@ -17,20 +11,19 @@ const {
 } = require('../controllers/adminController');
 const { protect, allowRoles } = require('../middleware/authMiddleware');
 
-// Apply authentication and admin role check to every route below
+// Protect all admin routes
 router.use(protect, allowRoles('admin'));
 
-// User management
+// Admin user management routes
 router.get('/users', getAllUsers);
 router.put('/users/:id/role', updateUserRole);
 router.delete('/users/:id', deleteUser);
 
-// Boat management (admin can update harbour or delete any boat)
+// Admin boat management routes
 router.put('/boats/:id', updateBoat);
 router.delete('/boats/:id', deleteBoat);
 
-// System statistics for the dashboard
+// Admin system statistics route
 router.get('/stats', getStats);
 
 module.exports = router;
-

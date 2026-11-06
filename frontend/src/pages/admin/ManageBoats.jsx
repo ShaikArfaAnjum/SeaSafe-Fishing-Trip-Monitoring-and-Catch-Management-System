@@ -1,8 +1,5 @@
-// ============================================================
-// src/pages/admin/ManageBoats.jsx
 // Admin page to manage all registered vessels across harbours.
 // Allows updating harbour assignments and displays harbour fleet counts.
-// ============================================================
 
 import { useState, useEffect } from 'react';
 import api from '../../api';

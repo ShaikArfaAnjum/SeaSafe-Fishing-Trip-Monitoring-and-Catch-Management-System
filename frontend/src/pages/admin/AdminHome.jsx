@@ -1,9 +1,6 @@
-// ============================================================
-// src/pages/admin/AdminHome.jsx
 // Admin dashboard overview matching panel 4 in the reference image.
-// Contains: System StatCards, Fish Price Management preview,
-// and Catch Reports Summary with clean CSS progress bars.
-// ============================================================
+// Contains: System StatCards, Fish Price Management preview,and Catch Reports Summary with clean CSS progress bars.
+
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';

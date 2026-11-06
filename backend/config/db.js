@@ -1,13 +1,7 @@
-// ============================================================
-// config/db.js
-// This file connects the application to MongoDB using Mongoose.
-// It is called once when the server starts.
-// ============================================================
-
+// Connect to MongoDB using Mongoose
 const mongoose = require('mongoose');
 
-// Connect to the MongoDB database using the URI from environment variables.
-// If the connection fails, print the error and stop the server.
+// Connect to MongoDB using MONGO_URI
 async function connectDB() {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI);
@@ -19,4 +13,3 @@ async function connectDB() {
 }
 
 module.exports = connectDB;
-

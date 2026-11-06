@@ -1,14 +1,8 @@
-// ============================================================
-// controllers/priceController.js
-// Handles the fish price board.
-// Admin can add, update, and delete prices.
-// Any logged-in user can view the price list.
-// ============================================================
+// Price controller: handles fish market price board operations
 
 const Price = require('../models/Price');
 
-// GET /api/prices
-// Return all fish prices sorted alphabetically by fish type.
+// GET /api/prices - return all fish prices sorted alphabetically
 async function getPrices(req, res) {
   try {
     const prices = await Price.find().sort({ fishType: 1 });
@@ -18,19 +12,15 @@ async function getPrices(req, res) {
   }
 }
 
-// POST /api/prices
-// Add a new fish type and its price. Admin only.
-// Rejects duplicate fish types.
+// POST /api/prices - add a new fish variety and price (admin only)
 async function createPrice(req, res) {
   try {
     const { fishType, pricePerKg } = req.body;
 
-    // Both fields are required
     if (!fishType || pricePerKg === undefined) {
       return res.status(400).json({ message: 'Please provide fishType and pricePerKg.' });
     }
 
-    // A price entry for this fish type must not already exist
     const existingPrice = await Price.findOne({ fishType });
     if (existingPrice) {
       return res.status(400).json({
@@ -45,8 +35,7 @@ async function createPrice(req, res) {
   }
 }
 
-// PUT /api/prices/:id
-// Update a fish price entry. Admin only.
+// PUT /api/prices/:id - update price entry (admin only)
 async function updatePrice(req, res) {
   try {
     const price = await Price.findById(req.params.id);
@@ -55,7 +44,6 @@ async function updatePrice(req, res) {
       return res.status(404).json({ message: 'Price entry not found.' });
     }
 
-    // Update only the fields that were sent
     const { fishType, pricePerKg } = req.body;
     if (fishType !== undefined)   price.fishType = fishType;
     if (pricePerKg !== undefined) price.pricePerKg = pricePerKg;
@@ -67,8 +55,7 @@ async function updatePrice(req, res) {
   }
 }
 
-// DELETE /api/prices/:id
-// Delete a fish price entry. Admin only.
+// DELETE /api/prices/:id - delete price entry (admin only)
 async function deletePrice(req, res) {
   try {
     const price = await Price.findById(req.params.id);
@@ -85,4 +72,3 @@ async function deletePrice(req, res) {
 }
 
 module.exports = { getPrices, createPrice, updatePrice, deletePrice };
-

@@ -1,7 +1,4 @@
-// ============================================================
-// src/pages/fisherman/PriceBoard.jsx
 // Displays the live fish price board maintained by the port administration.
-// ============================================================
 
 import { useState, useEffect } from 'react';
 import api from '../../api';

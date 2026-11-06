@@ -1,7 +1,4 @@
-// ============================================================
-// src/components/Navbar.jsx
 // Top bar showing user avatar, name, role badge, and mobile toggle.
-// ============================================================
 
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';

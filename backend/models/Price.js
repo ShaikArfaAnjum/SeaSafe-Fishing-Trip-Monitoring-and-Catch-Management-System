@@ -1,14 +1,8 @@
-// ============================================================
-// models/Price.js
-// Defines the Price model for the fish price board.
-// The admin maintains the current price per kg for each fish type.
-// ============================================================
-
+// Fish price model schema
 const mongoose = require('mongoose');
 
 const priceSchema = new mongoose.Schema(
   {
-    // Fish type must be unique (e.g., "Tuna", "Prawns")
     fishType: {
       type: String,
       required: true,
@@ -24,4 +18,3 @@ const priceSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model('Price', priceSchema);
-

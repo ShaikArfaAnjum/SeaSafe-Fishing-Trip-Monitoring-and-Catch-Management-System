@@ -1,7 +1,4 @@
-// ============================================================
-// src/pages/admin/AllTrips.jsx
 // Admin page to view all fishing trips across the system with status filters.
-// ============================================================
 
 import { useState, useEffect } from 'react';
 import api from '../../api';

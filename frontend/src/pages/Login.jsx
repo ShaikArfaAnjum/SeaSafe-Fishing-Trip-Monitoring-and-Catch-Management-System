@@ -1,7 +1,4 @@
-// ============================================================
-// src/pages/Login.jsx
 // User login page perfectly matching Image 1 using auth-bg.jpg template.
-// ============================================================
 
 import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';

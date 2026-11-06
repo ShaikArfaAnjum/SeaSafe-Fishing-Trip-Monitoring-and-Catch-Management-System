@@ -1,8 +1,5 @@
-// ============================================================
-// src/pages/fisherman/MyBoats.jsx
 // Page for fishermen to register, view, update and delete their boats.
 // Includes crew members list and emergency contact info.
-// ============================================================
 
 import { useState, useEffect } from 'react';
 import api from '../../api';

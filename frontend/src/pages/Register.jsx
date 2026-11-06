@@ -1,7 +1,4 @@
-// ============================================================
-// src/pages/Register.jsx
 // User registration page matching the SeaSafe layout with auth-bg.jpg template.
-// ============================================================
 
 import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';

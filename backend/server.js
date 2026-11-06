@@ -1,10 +1,4 @@
-// ============================================================
-// server.js
-// Main entry point for the SeaSafe backend server.
-// Order: load env → connect DB → run overdue check → start listening.
-// ============================================================
-
-// Load environment variables from .env FIRST (before any other require)
+// Main entry point for SeaSafe backend server
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
@@ -13,30 +7,26 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const { markOverdueTrips } = require('./controllers/tripController');
 
-// Import all route files
-const authRoutes  = require('./routes/authRoutes');
-const boatRoutes  = require('./routes/boatRoutes');
-const tripRoutes  = require('./routes/tripRoutes');
+// Import route modules
+const authRoutes = require('./routes/authRoutes');
+const boatRoutes = require('./routes/boatRoutes');
+const tripRoutes = require('./routes/tripRoutes');
 const priceRoutes = require('./routes/priceRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
-// ---- CORS configuration ----
-// CLIENT_URL in .env can be a comma-separated list of allowed origins.
-// e.g. CLIENT_URL=http://localhost:5173,https://seasafe.example.com
-var allowedOrigins = process.env.CLIENT_URL
-  ? process.env.CLIENT_URL.split(',').map(function (o) { return o.trim(); })
+// Configure CORS allowed origins
+const allowedOrigins = process.env.CLIENT_URL
+  ? process.env.CLIENT_URL.split(',').map(o => o.trim())
   : [];
 
-// Always include the local dev server as an allowed origin
 if (!allowedOrigins.includes('http://localhost:5173')) {
   allowedOrigins.push('http://localhost:5173');
 }
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin header (e.g. curl, Postman, mobile apps)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -46,24 +36,22 @@ app.use(cors({
   credentials: true
 }));
 
-// Parse incoming requests with JSON bodies
+// Parse JSON request bodies
 app.use(express.json());
 
-// ---- Routes ----
-
-app.use('/api/auth',   authRoutes);
-app.use('/api/boats',  boatRoutes);
-app.use('/api/trips',  tripRoutes);
+// API route registrations
+app.use('/api/auth', authRoutes);
+app.use('/api/boats', boatRoutes);
+app.use('/api/trips', tripRoutes);
 app.use('/api/prices', priceRoutes);
-app.use('/api/admin',  adminRoutes);
+app.use('/api/admin', adminRoutes);
 
-// Serve frontend static assets in production or when dist exists
+// Serve frontend static assets in production
 const fs = require('fs');
 const frontendDistPath = path.resolve(__dirname, '../frontend/dist');
 
 if (fs.existsSync(frontendDistPath)) {
   app.use(express.static(frontendDistPath));
-  // Any non-API route returns index.html for React Router SPA
   app.get('*', function (req, res, next) {
     if (req.path.startsWith('/api')) {
       return next();
@@ -71,7 +59,7 @@ if (fs.existsSync(frontendDistPath)) {
     res.sendFile(path.join(frontendDistPath, 'index.html'));
   });
 } else {
-  // Health check fallback when running backend standalone
+  // Health check fallback
   app.get('/', function (req, res) {
     res.json({ message: 'SeaSafe API is running' });
   });
@@ -79,12 +67,11 @@ if (fs.existsSync(frontendDistPath)) {
 
 const PORT = process.env.PORT || 5000;
 
-// Connect to the database, then start the server and overdue check
+// Connect to MongoDB and start server with overdue trip checker
 async function startServer() {
-  // Connect to MongoDB first – exits if connection fails
   await connectDB();
 
-  // Run overdue check once immediately after the server starts
+  // Initial overdue trip check on startup
   try {
     await markOverdueTrips();
     console.log('Initial overdue trip check completed.');
@@ -92,8 +79,7 @@ async function startServer() {
     console.error('Error during initial overdue check: ' + error.message);
   }
 
-  // Run the overdue check every 60 seconds automatically.
-  // Wrapped in try/catch so a single failure never crashes the server.
+  // Automatic overdue trip check every 60 seconds
   setInterval(async function () {
     try {
       await markOverdueTrips();
@@ -108,4 +94,3 @@ async function startServer() {
 }
 
 startServer();
-

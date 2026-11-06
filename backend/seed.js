@@ -1,12 +1,4 @@
-// ============================================================
-// seed.js
-// Populates the database with realistic sample data for development.
-// Run with:  npm run seed
-//
-// WARNING: This deletes ALL existing Users, Boats, Trips and Prices
-//          before inserting fresh data. Do NOT run on production.
-// ============================================================
-
+// Database seed script to populate sample data
 const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '.env') });
 
@@ -19,45 +11,42 @@ const Boat  = require('./models/Boat');
 const Trip  = require('./models/Trip');
 const Price = require('./models/Price');
 
-// Helper: return a Date that is a given number of hours before now
+// Helper to return date hours before now
 function hoursAgo(hours) {
   return new Date(Date.now() - hours * 60 * 60 * 1000);
 }
 
-// Helper: return a Date that is a given number of hours after now
+// Helper to return date hours after now
 function hoursFromNow(hours) {
   return new Date(Date.now() + hours * 60 * 60 * 1000);
 }
 
-// Helper: return a Date that is a given number of days before now
+// Helper to return date days before now
 function daysAgo(days) {
   return new Date(Date.now() - days * 24 * 60 * 60 * 1000);
 }
 
+// Populate database with sample users, boats, trips and fish prices
 async function seedDatabase() {
   try {
     await connectDB();
 
     console.log('\nClearing existing data...');
-    // Delete in this order to avoid any reference issues
+    // Delete existing records before seeding
     await Trip.deleteMany({});
     await Boat.deleteMany({});
     await User.deleteMany({});
     await Price.deleteMany({});
     console.log('Old data cleared.\n');
 
-    // =====================================================
-    // USERS
-    // =====================================================
-
-    // Hash all passwords before saving (bcrypt, salt rounds = 10)
+    // Hash passwords for sample users
     const salt = await bcrypt.genSalt(10);
-
     const hashedAdmin   = await bcrypt.hash('admin123',   salt);
     const hashedOfficer = await bcrypt.hash('officer123', salt);
     const hashedRamesh  = await bcrypt.hash('ramesh123',  salt);
     const hashedSuresh  = await bcrypt.hash('suresh123',  salt);
 
+    // Insert sample users
     const users = await User.insertMany([
       {
         name:     'Vikram Sharma',
@@ -85,16 +74,11 @@ async function seedDatabase() {
       }
     ]);
 
-    // Store references for readability below
-    var ramesh = users[2];
-    var suresh = users[3];
-
+    const ramesh = users[2];
+    const suresh = users[3];
     console.log('✓ Users created (4)');
 
-    // =====================================================
-    // BOATS  –  spread across Andhra Pradesh harbours
-    // =====================================================
-
+    // Insert sample boats across Andhra Pradesh harbours
     const boats = await Boat.insertMany([
       {
         boatName:             'Sea Star',
@@ -148,24 +132,14 @@ async function seedDatabase() {
       }
     ]);
 
-    var seaStar   = boats[0];
-    var oceanKing = boats[1];
-    var blueWave  = boats[2];
-    var sagarMitra = boats[3];
-
+    const seaStar   = boats[0];
+    const oceanKing = boats[1];
+    const blueWave  = boats[2];
+    const sagarMitra = boats[3];
     console.log('✓ Boats created (4)');
 
-    // =====================================================
-    // TRIPS  –  6 trips with realistic dates
-    // Rule: each boat has at most ONE active trip at a time.
-    //   Sea Star:    1 Returned  +  1 At Sea      (active)
-    //   Ocean King:  1 Returned  +  1 Overdue     (active)
-    //   Blue Wave:   1 Returned
-    //   Sagar Mitra: 1 Returned
-    // =====================================================
-
+    // Insert sample trips with varied statuses (Returned, At Sea, Overdue)
     await Trip.insertMany([
-      // ---- Trip 1: Sea Star – Returned (7 days ago trip) ----
       {
         boat:               seaStar._id,
         owner:              ramesh._id,
@@ -179,8 +153,6 @@ async function seedDatabase() {
         ],
         alertStatus: 'None'
       },
-
-      // ---- Trip 2: Ocean King – Returned (10 days ago trip) ----
       {
         boat:               oceanKing._id,
         owner:              ramesh._id,
@@ -194,8 +166,6 @@ async function seedDatabase() {
         ],
         alertStatus: 'None'
       },
-
-      // ---- Trip 3: Blue Wave – Returned (5 days ago trip) ----
       {
         boat:               blueWave._id,
         owner:              suresh._id,
@@ -209,8 +179,6 @@ async function seedDatabase() {
         ],
         alertStatus: 'None'
       },
-
-      // ---- Trip 4: Sagar Mitra – Returned (15 days ago trip) ----
       {
         boat:               sagarMitra._id,
         owner:              suresh._id,
@@ -224,8 +192,6 @@ async function seedDatabase() {
         ],
         alertStatus: 'None'
       },
-
-      // ---- Trip 5: Sea Star – At Sea (active, expected return 4 hours from now) ----
       {
         boat:               seaStar._id,
         owner:              ramesh._id,
@@ -235,9 +201,6 @@ async function seedDatabase() {
         catches:            [],
         alertStatus:        'None'
       },
-
-      // ---- Trip 6: Ocean King – Overdue (expected return was 2 hours ago) ----
-      // alertStatus is "Open" so the harbour officer can follow up.
       {
         boat:               oceanKing._id,
         owner:              ramesh._id,
@@ -251,10 +214,7 @@ async function seedDatabase() {
 
     console.log('✓ Trips created (6)');
 
-    // =====================================================
-    // PRICES  –  common fish in Andhra Pradesh (₹/kg)
-    // =====================================================
-
+    // Insert current fish prices for Andhra Pradesh
     await Price.insertMany([
       { fishType: 'Tuna',     pricePerKg: 250 },
       { fishType: 'Prawns',   pricePerKg: 350 },
@@ -266,20 +226,7 @@ async function seedDatabase() {
 
     console.log('✓ Prices created (6)');
 
-    // =====================================================
-    // SUMMARY
-    // =====================================================
-
-    console.log('\n========================================');
-    console.log('         SEED COMPLETED ✓              ');
-    console.log('========================================');
-    console.log('Login credentials:');
-    console.log('  Admin     →  admin@seasafe.com     / admin123');
-    console.log('  Officer   →  officer@seasafe.com   / officer123');
-    console.log('  Fisherman →  ramesh@seasafe.com    / ramesh123');
-    console.log('  Fisherman →  suresh@seasafe.com    / suresh123');
-    console.log('========================================\n');
-
+    console.log('\nSeed completed successfully.');
     process.exit(0);
   } catch (error) {
     console.error('Seed failed: ' + error.message);
@@ -288,4 +235,3 @@ async function seedDatabase() {
 }
 
 seedDatabase();
-

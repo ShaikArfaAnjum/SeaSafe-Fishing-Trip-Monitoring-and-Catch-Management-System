@@ -1,6 +1,6 @@
 /* ============================================================
    src/styles/global.css
-   Global styles, CSS reset, and custom CSS color variables.
+   //Global styles, CSS reset, and custom CSS color variables.
    ============================================================ */
 
 :root {
@@ -63,7 +63,9 @@ button {
   outline: none;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   font-family: inherit;
   font-size: 0.95rem;
 }
@@ -229,4 +231,3 @@ tbody tr:hover {
   font-size: 3rem;
   margin-bottom: 0.5rem;
 }
-

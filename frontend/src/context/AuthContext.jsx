@@ -1,8 +1,5 @@
-// ============================================================
-// src/context/AuthContext.jsx
+
 // React Context providing authentication state (user & token)
-// throughout the whole application.
-// ============================================================
 
 import { createContext, useState, useEffect } from 'react';
 

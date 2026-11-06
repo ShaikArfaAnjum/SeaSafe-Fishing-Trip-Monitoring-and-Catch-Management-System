@@ -1,12 +1,7 @@
-// ============================================================
-// models/Boat.js
-// Defines the Boat model for the database.
-// A boat belongs to a fisherman (owner) and has a list of crew members.
-// ============================================================
-
+// Boat model schema
 const mongoose = require('mongoose');
 
-// Schema for each crew member on the boat
+// Crew member subdocument schema
 const crewMemberSchema = new mongoose.Schema({
   name:  { type: String, required: true },
   age:   { type: Number, required: true },
@@ -20,7 +15,6 @@ const boatSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    // Must be unique across all boats
     registrationNumber: {
       type: String,
       required: true,
@@ -32,13 +26,11 @@ const boatSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
-    // The fisherman who registered and owns this boat
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true
     },
-    // List of crew members on this boat
     crew: [crewMemberSchema],
     emergencyContactName: {
       type: String,
@@ -53,4 +45,3 @@ const boatSchema = new mongoose.Schema(
 );
 
 module.exports = mongoose.model('Boat', boatSchema);
-

@@ -1,7 +1,5 @@
-// ============================================================
-// src/components/StatCard.jsx
+
 // Standard statistic card matching the SeaSafe reference design.
-// ============================================================
 
 export default function StatCard({ title, value, icon, iconBg = '#e0f2fe' }) {
   return (

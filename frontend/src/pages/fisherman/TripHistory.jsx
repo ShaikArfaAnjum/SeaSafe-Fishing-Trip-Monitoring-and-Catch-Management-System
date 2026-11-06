@@ -1,8 +1,6 @@
-// ============================================================
-// src/pages/fisherman/TripHistory.jsx
 // Displays complete historical record of all trips for the logged-in fisherman.
 // Includes departure, expected return, actual return, status, and catches.
-// ============================================================
+
 
 import { useState, useEffect } from 'react';
 import api from '../../api';
