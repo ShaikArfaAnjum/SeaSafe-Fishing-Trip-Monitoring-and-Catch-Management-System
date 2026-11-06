@@ -197,10 +197,10 @@ All passwords have been pre-hashed with bcrypt in `seed.js`:
 
 ## 👥 Team AlphaCore
 
-| Name | Registration Number | Department | Role |
+| Name | Registration Number | Department | 
 |---|---|---|---|
-| Student Name 1 | 21BCE0001 | Computer Science & Engineering | Frontend Lead |
-| Student Name 2 | 21BCE0002 | Computer Science & Engineering | Backend Lead |
-| Student Name 3 | 21BCE0003 | Computer Science & Engineering | Database & QA |
-| Student Name 4 | 21BCE0004 | Computer Science & Engineering | Documentation |
+| Shaik Arfa Anjum | 241FA04931 | Computer Science & Engineering | 
+| Gopika | 241FA04438 | Computer Science & Engineering | 
+| Bhavya | 241FA04172 | Computer Science & Engineering | 
+| Student Name 4 | 21BCE0004 | Computer Science & Engineering |
 
