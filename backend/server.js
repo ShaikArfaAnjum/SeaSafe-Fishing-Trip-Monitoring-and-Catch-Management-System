@@ -46,12 +46,13 @@ app.use('/api/trips', tripRoutes);
 app.use('/api/prices', priceRoutes);
 app.use('/api/admin', adminRoutes);
 
-// Serve frontend static files directly from the build directory
-app.use(express.static(path.join(__dirname, '../frontend/dist')));
+// Bulletproof static serving path tracking logic
+const frontendPath = path.join(__dirname, '..', 'frontend', 'dist');
+app.use(express.static(frontendPath));
 
-// Catch-all route to serve the React SPA entry point for all non-API paths
+// Catch-all route for Single Page Application routing (placed AFTER all API endpoints)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
 const PORT = process.env.PORT || 5000;
