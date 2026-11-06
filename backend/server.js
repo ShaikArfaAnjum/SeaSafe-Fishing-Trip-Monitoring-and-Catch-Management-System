@@ -46,24 +46,13 @@ app.use('/api/trips', tripRoutes);
 app.use('/api/prices', priceRoutes);
 app.use('/api/admin', adminRoutes);
 
-// Serve frontend static assets in production
-const fs = require('fs');
-const frontendDistPath = path.resolve(__dirname, '../frontend/dist');
+// Serve frontend static files directly from the build directory
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-if (fs.existsSync(frontendDistPath)) {
-  app.use(express.static(frontendDistPath));
-  app.get('*', function (req, res, next) {
-    if (req.path.startsWith('/api')) {
-      return next();
-    }
-    res.sendFile(path.join(frontendDistPath, 'index.html'));
-  });
-} else {
-  // Health check fallback
-  app.get('/', function (req, res) {
-    res.json({ message: 'SeaSafe API is running' });
-  });
-}
+// Catch-all route to serve the React SPA entry point for all non-API paths
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+});
 
 const PORT = process.env.PORT || 5000;
 
