@@ -6,9 +6,9 @@
 
 import axios from 'axios';
 
-// Create the axios instance with baseURL from .env (fallback to localhost)
+// Create the axios instance with baseURL from .env (fallback to relative /api in production)
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+  baseURL: import.meta.env.VITE_API_URL || '/api'
 });
 
 // Request interceptor: attach Bearer token from localStorage to every request

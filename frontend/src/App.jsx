@@ -41,9 +41,8 @@ import Reports from './pages/admin/Reports';
 
 // Root redirector based on authenticated user's role
 function RootRedirect() {
-  const { user, token, loading } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
 
-  if (loading) return null;
   if (!token || !user) return <Navigate to="/login" replace />;
 
   if (user.role === 'fisherman') return <Navigate to="/fisherman" replace />;
