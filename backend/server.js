@@ -27,10 +27,16 @@ if (!allowedOrigins.includes('http://localhost:5173')) {
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (
+      !origin ||
+      allowedOrigins.includes(origin) ||
+      origin.includes('localhost') ||
+      origin.includes('127.0.0.1') ||
+      origin.includes('onrender.com')
+    ) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(null, true);
     }
   },
   credentials: true
@@ -52,6 +58,9 @@ app.use(express.static(frontendPath));
 
 // Catch-all route for Single Page Application routing (placed AFTER all API endpoints)
 app.get('*', (req, res) => {
+  if (req.path.startsWith('/assets/') || req.path.match(/\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$/)) {
+    return res.status(404).send('Asset not found');
+  }
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
